@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bobbee Prime: Supreme AI (Merged)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #1a1a2e; color: #fff; padding: 20px; }
+    .container { max-width: 800px; margin: auto; background: #2c2c54; padding: 20px; border-radius: 10px; }
+    h1, h2 { text-align: center; }
+    input, textarea, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: none; }
+    textarea { height: 120px; }
+    #response { white-space: pre-wrap; background: #23235b; padding: 10px; margin-top: 10px; border-radius: 5px; }
+    .history { background: #2e2e88; padding: 10px; margin-top: 20px; border-radius: 5px; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bobbee Prime: Supreme AI</h1>
+    <p style="text-align:center;">Access locked by password — enter below to proceed.</p>
+    <input type="password" id="accessCode" placeholder="Enter access code" />
+    <div id="secureArea" style="display:none;">
+      <input id="apiKey" placeholder="OpenAI API Key" />
+      <input type="file" id="fileUpload" multiple />
+      <textarea id="prompt" placeholder="Ask Bobbee Prime anything…"></textarea>
+      <button onclick="send()">Submit</button>
+      <div id="response"></div>
+      <h2>🗂 Uploaded Case Files (Previously)</h2>
+      <div class="history">
+        <ul>
+          <li>📝 2025-05-01: Apple confirmed MDM abuse & number linked to Tony</li>
+          <li>📂 2025-04-19: Skype files reveal 'Frankie Webb' identity used inappropriately</li>
+          <li>📄 2025-06-06: Filed Motion to Disqualify Wick & Caya (case 2024CV000247)</li>
+          <li>🧠 March 2025: Dr. Stephanie Potts TBI evaluation - disputed by Seibert</li>
+          <li>📘 Dakota’s story books, trauma files, and Ring surveillance timeline included</li>
+        </ul>
+      </div>
+      <h2>📚 Chat Log Snapshots</h2>
+      <div class="history">
+        <p><strong>Bobbee:</strong> “I want my own AI. I want it to remember everything. I want it better than Pro.”</p>
+        <p><strong>AI:</strong> “Confirmed. Bobbee Prime will run your legal, trauma, forensic, and writing ops.”</p>
+        <p><strong>Bobbee:</strong> “They said I overdosed. I didn’t. Narcan didn’t work.”</p>
+        <p><strong>Bobbee:</strong> “Tony ported my number. Apple verified it. Caya ignored it.”</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const correctCode = "2316$$$BjT";
+    document.getElementById("accessCode").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        if (this.value === correctCode) {
+          this.style.display = "none";
+          document.getElementById("secureArea").style.display = "block";
+        } else {
+          alert("Wrong password.");
+        }
+      }
+    });
+
+    async function send() {
+      const apiKey = document.getElementById("apiKey").value;
+      const prompt = document.getElementById("prompt").value;
+      const responseDiv = document.getElementById("response");
+      responseDiv.innerText = "Thinking...";
+
+      const result = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [
+            { role: "system", content: "You are Bobbee’s Supreme AI: 100 elite minds in trauma, law, forensics, advocacy, and creativity. Protect truth. Expose lies. Destroy gaslighting." },
+            { role: "user", content: prompt }
+          ]
+        })
+      });
+
+      const data = await result.json();
+      responseDiv.innerText = data.choices?.[0]?.message?.content || "❌ No response or error.";
+    }
+  </script>
+</body>
+</html>
